@@ -1,0 +1,120 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    margin: 0;
+}
+
+.game{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.play-btn{
+    width: 142px;
+    height: 145px;
+    margin-top: 10px;
+    margin-bottom: 13px;
+    border-radius: 0;
+    border: none;
+    cursor: pointer;
+    color: transparent;
+    background-color: white;
+}
+
+.play-btn:disabled{
+    cursor: default;
+}
+
+.circle{
+    background-image: url("./img/circle.svg");
+    background-repeat: none;
+    background-size: cover;
+}
+
+.cross{
+    background-image: url("./img/cross.svg");
+    background-repeat: none;
+    background-size: cover;
+ 
+}
+
+.buttonDiv{
+    display: flex;
+    justify-content: space-around;
+}
+
+#reset, #continue, #return {
+    width: 90%;
+    margin-top: 30px;
+    padding: 15px;
+    border: none;
+    font-weight: bolder;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#return{
+    width: 100%;
+    margin-top: 0px;
+}
+
+#return:hover, #reset:hover{
+    background-color: darkgray;
+}
+
+#continue{
+    color: white;
+    background-color: dodgerblue;
+}
+
+#continue:hover{
+    background-color: #0066cc;
+}
+
+.playingForm{
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+#winningSlab{
+    width: 500px;
+    height: 20px;
+    background-color: darkred;
+    display: none;
+    position: absolute;
+}
+
+.playing-grid{
+    background-image: url(img/playing-grid.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+    padding-bottom: 0%;
+    width: 500px;
+    height: 500px;
+}
+
+.returnForm{
+    margin-top: 45px;
+    width: 500px;
+    display: flex;
+}
+
+h1{
+    margin-bottom: 0px;
+}
+
+h2{
+    margin-top: 2px;
+    margin-bottom: 20px;
+}
