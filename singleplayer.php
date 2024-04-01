@@ -58,7 +58,7 @@
                     $cumulativeResult += (15 - $isBotOnMove);
                     continue; 
                 }else if($returnedAtAddition != -1){
-                    $cumulativeResult -= (10 - $isBotOnMove)**2;
+                    $cumulativeResult -= (10 - $isBotOnMove)**3;
                     continue; 
                 }else if($isBotOnMove == 7){
                     $cumulativeResult += $isBotOnMove; 
