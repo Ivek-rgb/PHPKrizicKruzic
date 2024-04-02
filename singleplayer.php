@@ -55,13 +55,13 @@
                 $returnedAtAddition = addToMarkedPositions(points[$symbol], $i, $additionArrayCopy); 
                 
                 if($returnedAtAddition != -1 && !($isBotOnMove % 2)){
-                    $cumulativeResult += (15 - $isBotOnMove);
+                    $cumulativeResult += (9 - $isBotOnMove);
                     continue; 
                 }else if($returnedAtAddition != -1){
-                    $cumulativeResult -= (10 - $isBotOnMove)**5;
+                    $cumulativeResult -= (10 - $isBotOnMove)**7;
                     continue; 
                 }else if($isBotOnMove == 7){
-                    $cumulativeResult += $isBotOnMove; 
+                    $cumulativeResult += $isBotOnMove * 3; 
                     continue;
                 }
 
@@ -106,10 +106,10 @@
         if($_SESSION["random"] && !$_SESSION["moves"]){
             $bestMove = rand(0, 8);
         }else $bestMove = returnMostOptimisticPosition();  
-        markForAi($bestMove);
         if($_SESSION["finished"] == -1){
             $_SESSION["last"] = aiPlayer;
             $_SESSION["finished"] = addToMarkedPositions(points[aiPlayer], $bestMove, $_SESSION["addition"]); 
+            markForAi($bestMove);
         }
     }
 
