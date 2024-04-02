@@ -21,54 +21,80 @@
     }
 
     function returnMostOptimisticPosition(){
-        $retVal = null;
-        $bestMove = -1; 
+
+        $moveArray = array(); 
         for($i =0; $i < 9; $i++){
+            
             $additionArrayCopy = $_SESSION["addition"];
             $boardCopy = $_SESSION["cells"];  
+            
             if($boardCopy[$i]==""){
-                $boardCopy[$i]=aiPlayer; 
+                
                 $returnedAtAddition = addToMarkedPositions(points[aiPlayer], $i, $additionArrayCopy);
+                
                 if($returnedAtAddition != -1){
                     return $i; 
                 }
-                $returnedLocalMaximum = branchAndMinMaxOptions($boardCopy, $additionArrayCopy, 1);
-                // echo "Move: " . $i . " val: $returnedLocalMaximum" . "<br><br>";  
-                if(!isset($retVal) || $returnedLocalMaximum > $retVal){
-                    $retVal = $returnedLocalMaximum; 
-                    $bestMove = $i; 
-                }
+                
+                $moveArray[$i] = branchAndMinMaxOptions($boardCopy, $additionArrayCopy, 1); 
+
             }
         }
-        return $bestMove; 
+
+        arsort($moveArray);
+
+        $returnPossibilities = []; 
+        $currValue = 0; 
+
+        foreach($moveArray as $key => $value){
+            if(count($returnPossibilities) == 0 || $value == $currValue){
+                array_push($returnPossibilities, $key);
+                $currValue = $value; 
+            }else break; 
+        }
+
+        if(count($returnPossibilities) == 0)
+            return null;
+        else return $returnPossibilities[rand(0, count($returnPossibilities) - 1)]; 
+
     }
 
+
     function branchAndMinMaxOptions($boardStatus, $additionArray, $isBotOnMove){
+        
         $symbol = (!($isBotOnMove % 2)) ? aiPlayer : player;
-        $cumulativeResult = 0;  
-        for($i =0; $i < 9; $i++){
+        $returnResult = 0; $bestPoints = NULL; 
+        
+        for($i = 0; $i < 9; $i++){
+
             $boardCopy = $boardStatus; 
-            $additionArrayCopy = $additionArray; 
+            $additionArrayCopy = $additionArray;
+
             if($boardCopy[$i] == ""){
                 
                 $boardCopy[$i] = $symbol; 
                 $returnedAtAddition = addToMarkedPositions(points[$symbol], $i, $additionArrayCopy); 
-                
+
                 if($returnedAtAddition != -1 && !($isBotOnMove % 2)){
-                    $cumulativeResult += (9 - $isBotOnMove);
-                    continue; 
+                    return  15 - $isBotOnMove;  
                 }else if($returnedAtAddition != -1){
-                    $cumulativeResult -= (10 - $isBotOnMove)**7;
-                    continue; 
-                }else if($isBotOnMove == 7){
-                    $cumulativeResult += $isBotOnMove * 3; 
-                    continue;
+                    return - 100 - (10 - $isBotOnMove)**4; 
+                }else if($_SESSION["moves"] + $isBotOnMove >= 8){
+                    return 0; 
                 }
 
-                $cumulativeResult += branchAndMinMaxOptions($boardCopy, $additionArrayCopy, $isBotOnMove + 1); 
+                $returnResult = branchAndMinMaxOptions($boardCopy, $additionArrayCopy, $isBotOnMove + 1);
+                
+                if(($isBotOnMove % 2) && (!isset($bestPoints) || $returnResult < $bestPoints )){
+                    $bestPoints = $returnResult; 
+                }else if(!isset($bestPoints) || ($returnResult > $bestPoints)){
+                    $bestPoints = $returnResult;
+                }
+
             }
         }
-        return $cumulativeResult; 
+
+        return $bestPoints; 
     }
 
     function markForAi(int $idxBtn){
@@ -97,6 +123,9 @@
             $_SESSION["last"] = player; 
             $_SESSION["cells"][$_POST["cell"]] = player;
             $_SESSION["moves"]++;
+            if($_SESSION["moves"] > 8){
+                $_SESSION["finished"] = -2; 
+            }
         }
 
     }
@@ -108,6 +137,7 @@
         }else $bestMove = returnMostOptimisticPosition();  
         if($_SESSION["finished"] == -1){
             $_SESSION["last"] = aiPlayer;
+            $_SESSION["moves"]++; 
             $_SESSION["finished"] = addToMarkedPositions(points[aiPlayer], $bestMove, $_SESSION["addition"]); 
             markForAi($bestMove);
         }
@@ -128,7 +158,7 @@
     <title>Krizic kruzic SP</title>
     <style>
         <?php 
-            if($_SESSION["finished"] != -1){
+            if($_SESSION["finished"] > -1){
                 
                 $_SESSION["points"][$_SESSION["last"]]++;
                  

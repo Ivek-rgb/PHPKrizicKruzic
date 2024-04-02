@@ -7,5 +7,5 @@
 <div id="winningSlab"></div>
 <div class="buttonDiv">
     <input type="submit" id="reset" name="resetBtn" value="Reset">
-    <input type="submit" id="continue" name="continueBtn" value="Continue">
+    <input type="submit" id="continue" name="continueBtn" value="Continue" <?php if(isset($_SESSION["finished"]) && $_SESSION["finished"] == -1) echo "disabled"; ?>>
 </div>

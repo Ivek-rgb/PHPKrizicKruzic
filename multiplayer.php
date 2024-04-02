@@ -6,6 +6,7 @@
     if(!isset($_SESSION["cells"])){
         $_SESSION["cells"] = ["", "", "", "", "", "", "", "", ""]; 
         $_SESSION["points"] = ["circle" => 0, "cross" => 0];
+        $_SESSION["moves"] = 0; 
         resetCounters(); 
     }
 
@@ -21,19 +22,24 @@
         if($_POST["continueBtn"] ?? "None" == "Continue"){
             resetCounters();
             resetBoard(); 
+            $_SESSION["moves"] = 0; 
         }
 
         if(isset($_POST["cell"])){
-            $_SESSION["finished"] = addToMarkedPositions($_SESSION["symbol"] == "cross" ? 1 : 50, $_POST["cell"], $_SESSION["addition"]);
-            $_SESSION["cells"][$_POST["cell"]] = $_SESSION["symbol"]; 
+            $_SESSION["moves"]++;
+            if($_SESSION["moves"] > 8){
+                $_SESSION["finished"] = -2; 
+            }else $_SESSION["finished"] = addToMarkedPositions($_SESSION["symbol"] == "cross" ? 1 : 50, $_POST["cell"], $_SESSION["addition"]);
+            $_SESSION["cells"][$_POST["cell"]] = $_SESSION["symbol"];
         }
 
-
-        if($_SESSION["finished"] == -1)
+        if($_SESSION["finished"] == -1){
             if(!isset($_SESSION["symbol"])){
                 $_SESSION["symbol"] = "cross";
             }else if($_SESSION["symbol"] == "cross") $_SESSION["symbol"] = "circle";
             else $_SESSION["symbol"] = "cross";
+
+        }
 
     }
 
@@ -53,7 +59,7 @@
     <title>Krizic Kruzic - MP</title>
     <style>
         <?php 
-            if($_SESSION["finished"] != -1){
+            if($_SESSION["finished"] > -1){
                 
                 $_SESSION["points"][$_SESSION["symbol"]]++;
                  
