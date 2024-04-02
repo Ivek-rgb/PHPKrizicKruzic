@@ -78,7 +78,7 @@
                 if($returnedAtAddition != -1 && !($isBotOnMove % 2)){
                     return  15 - $isBotOnMove;  
                 }else if($returnedAtAddition != -1){
-                    return - 100 - (10 - $isBotOnMove)**4; 
+                    return - 15 - (8 - $isBotOnMove)**2; 
                 }else if($_SESSION["moves"] + $isBotOnMove >= 8){
                     return 0; 
                 }
@@ -140,6 +140,9 @@
             $_SESSION["moves"]++; 
             $_SESSION["finished"] = addToMarkedPositions(points[aiPlayer], $bestMove, $_SESSION["addition"]); 
             markForAi($bestMove);
+        }
+        if($_SESSION["moves"] > 8 && $_SESSION["finished"] == -1){
+            $_SESSION["finished"] = -2; 
         }
     }
 
