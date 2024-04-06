@@ -41,6 +41,8 @@
             }
         }
 
+        echo(var_dump($moveArray)); 
+
         arsort($moveArray);
 
         $returnPossibilities = []; 
@@ -79,8 +81,8 @@
                     return  15 - $isBotOnMove;  
                 }else if($returnedAtAddition != -1){
                     return - 15 - (8 - $isBotOnMove)**2; 
-                }else if($_SESSION["moves"] + $isBotOnMove >= 8){
-                    return 0; 
+                }else if($_SESSION["moves"] + $isBotOnMove > 8){
+                    return $isBotOnMove; 
                 }
 
                 $returnResult = branchAndMinMaxOptions($boardCopy, $additionArrayCopy, $isBotOnMove + 1);
@@ -123,7 +125,7 @@
             $_SESSION["last"] = player; 
             $_SESSION["cells"][$_POST["cell"]] = player;
             $_SESSION["moves"]++;
-            if($_SESSION["moves"] > 8){
+            if($_SESSION["moves"] > 8 && $_SESSION["finished"] == -1){
                 $_SESSION["finished"] = -2; 
             }
         }

@@ -27,9 +27,10 @@
 
         if(isset($_POST["cell"])){
             $_SESSION["moves"]++;
-            if($_SESSION["moves"] > 8){
+            $_SESSION["finished"] = addToMarkedPositions($_SESSION["symbol"] == "cross" ? 1 : 50, $_POST["cell"], $_SESSION["addition"]);
+            if($_SESSION["moves"] > 8 && $_SESSION["finished"] == -1){
                 $_SESSION["finished"] = -2; 
-            }else $_SESSION["finished"] = addToMarkedPositions($_SESSION["symbol"] == "cross" ? 1 : 50, $_POST["cell"], $_SESSION["addition"]);
+            } 
             $_SESSION["cells"][$_POST["cell"]] = $_SESSION["symbol"];
         }
 
