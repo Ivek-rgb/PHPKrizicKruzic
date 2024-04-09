@@ -41,7 +41,7 @@
             }
         }
 
-        echo(var_dump($moveArray)); 
+        #echo(var_dump($moveArray)); 
 
         arsort($moveArray);
 
